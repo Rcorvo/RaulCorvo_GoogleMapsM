@@ -92,21 +92,36 @@ public class MainActivity extends AppCompatActivity implements GoogleMap.OnMapCl
     }
 
     void moverCamara(View v){
-        mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(BENIDORM, 13));
+        if(hayPermisoLocalizacion()){
+            mapa.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(BENIDORM, 13));
+        }
+        else{
+            ActivityCompat.requestPermissions(this, PERMISOS_LOCALIZACION, PETICION_LOCALIZACION);
+        }
     }
 
     void animarCamara(View v){
-        mapa.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(PEREMARIA, 18));
+        if(hayPermisoLocalizacion()){
+            mapa.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            mapa.animateCamera(CameraUpdateFactory.newLatLngZoom(PEREMARIA, 18));
+        }
+        else{
+            ActivityCompat.requestPermissions(this, PERMISOS_LOCALIZACION, PETICION_LOCALIZACION);
+        }
     }
 
     void aMiPosicion(View v){
-        if(mapa.getMyLocation() != null){
-            mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-            mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(mapa.getMyLocation().getLatitude(),
-                            mapa.getMyLocation().getLongitude()), 20));
+        if(hayPermisoLocalizacion()){
+            if(mapa.getMyLocation() != null){
+                mapa.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                mapa.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(mapa.getMyLocation().getLatitude(),
+                                mapa.getMyLocation().getLongitude()), 20));
+            }
+        }
+        else{
+            ActivityCompat.requestPermissions(this, PERMISOS_LOCALIZACION, PETICION_LOCALIZACION);
         }
     }
 }
